@@ -1,0 +1,62 @@
+node_modules/
+slant3d-shopify-firebase-adminsdk-knmkx-80fb30db49.json
+
+
+ 
+         form.append('uploaded_file', file); // {File | ReadStream} We currently only take STL files [REQUIRED]
+      form.append('name', customerInfo.first_name || 'moath');
+      form.append('phone', customerInfo.phone || 190871520);
+      form.append('order_quantity', item.quantity || '2');
+      form.append('order_item_name', item.name || 'snow');
+      form.append('order_item_color', 'black'); // Color is not available in this context, adjust if needed
+      form.append('email', customerInfo.email || 'moathabdulrazak12@gmail.com');
+      form.append('bill_to_street_1', order.billing_address.address1 || '2419 w fairview');
+      form.append('bill_to_street_2', order.billing_address.address2 || '');
+      form.append('bill_to_street_3', '');
+      form.append('bill_to_city', order.billing_address.city || 'boise');
+      form.append('bill_to_state',  'id');
+      form.append('bill_to_zip',  83702);
+      form.append('bill_to_country_as_iso', (order.billing_address.country_code || 'us').toLowerCase());
+      form.append('bill_to_is_US_residential', 'true');
+      form.append('ship_to_name', customerInfo.first_name || '');
+      form.append('ship_to_street_1', order.shipping_address.address1 || '2419 w fairview');
+      form.append('ship_to_street_2', order.shipping_address.address2 || '');
+      form.append('ship_to_street_3', '');
+      form.append('ship_to_city', order.shipping_address.city || 'boise');
+      form.append('ship_to_state',  'id');
+      form.append('ship_to_zip',  83702);
+      form.append('ship_to_country_as_iso', (order.shipping_address.country_code || 'us').toLowerCase());
+      form.append('ship_to_is_US_residential', 'true');
+
+
+
+
+
+    // Assuming "order" is the Shopify order data and "customer" is the order's customer data
+    formData.append('name', order.customer.first_name + ' ' + order.customer.last_name); // {string} [REQUIRED]
+    formData.append('phone', order.customer.default_address.phone || 'No phone provided'); // {string} [REQUIRED]
+    
+    // Assuming "line_items[0]" is the first item of the order
+    formData.append('order_quantity', order.line_items[0].quantity.toString()); // {number} [REQUIRED]
+    formData.append('order_item_name', order.line_items[0].name); // {string} [REQUIRED]
+    formData.append('order_item_color', 'gray'); // {'black' | 'gray' | 'white'} [REQUIRED] - You'll have to determine this yourself
+    
+    formData.append('bill_to_street_1', order.billing_address.address1); // {string} [REQUIRED]
+    formData.append('bill_to_street_2', order.billing_address.address2 || ''); // {string}
+    formData.append('bill_to_street_3', ''); // {string} - Shopify doesn't provide a 3rd line
+    formData.append('bill_to_city', order.billing_address.city); // {string} [REQUIRED]
+    formData.append('bill_to_state', order.billing_address.province); // {string} [REQUIRED]
+    formData.append('bill_to_zip', order.billing_address.zip); // {string} [REQUIRED]
+    formData.append('bill_to_country_as_iso', order.billing_address.country_code); // A 3 letter ISO country string {string} [REQUIRED]
+    formData.append('bill_to_is_US_residential', 'true'); // {'true' | 'false'} - You'll have to determine this yourself
+    
+    formData.append('ship_to_name', order.shipping_address.name); // {string} [REQUIRED]
+    formData.append('ship_to_street_1', order.shipping_address.address1); // {string} [REQUIRED]
+    formData.append('ship_to_street_2', order.shipping_address.address2 || ''); // {string}
+    formData.append('ship_to_street_3', ''); // {string} - Shopify doesn't provide a 3rd line
+    formData.append('ship_to_city', order.shipping_address.city); // {string} [REQUIRED]
+    formData.append('ship_to_state', order.shipping_address.province); // {string} [REQUIRED]
+    formData.append('ship_to_zip', order.shipping_address.zip); // {string} [REQUIRED]
+    formData.append('ship_to_country_as_iso', order.shipping_address.country_code); // A 3 letter ISO country string {string} [REQUIRED]
+    formData.append('ship_to_is_US_residential', 'true'); // {'true' | 'false'} - You'll have to determine this yourself
+    
