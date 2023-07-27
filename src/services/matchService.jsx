@@ -2,7 +2,7 @@ import { db } from '../firebase';
 import { collection, addDoc, updateDoc, doc, getDocs, query, where } from 'firebase/firestore';
 
 const matchService = {
-  createMatching: async (fileId, fileName, fileUrl, productId, productName) => {
+  createMatching: async (fileId, fileName, fileUrl, productId, productName, price, userId, color) => {
     try {
       // Create a document in the 'matchedProducts' collection
       const matchingRef = await addDoc(collection(db, 'matchedProducts'), {
@@ -12,6 +12,9 @@ const matchService = {
         productId,
         productName,
         matchingId: '', // Initialize the matching ID field
+        price,
+        userId,
+        color
       });
 
       const matchingId = matchingRef.id;

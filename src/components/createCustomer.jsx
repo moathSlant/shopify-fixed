@@ -109,7 +109,7 @@ const CreateCustomerForm = () => {
 
   return (
     <div className="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Connect to Stripe</h2>
+      <h2 className="text-2xl font-bold mb-4">Connect your credit card</h2>
       {error && <p className="text-red-500">Error: {error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

@@ -4,7 +4,7 @@ import { getSessionToken, isSessionTokenValid } from '@shopify/app-bridge-utils'
 
 // Create the app instance
 const app = createApp({
-  apiKey: '4f72768a57fa8a47af16143cbdccfe91',
+  apiKey: 'c71b00c84cf28e4c754216c1bf71baea',
   host: 'YOUR_SHOPIFY_SHOP_DOMAIN',
 });
 

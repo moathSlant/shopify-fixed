@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './ConnectToShopify.css'
 const ConnectToShopify = () => {
-  const [shop, setShop] = useState(''); // Use state to store the user's shop domain
+  const [shop, setShop] = useState('');
 
     const handleConnectShopify = () => {
-      const apiKey = '4f72768a57fa8a47af16143cbdccfe91';
-      const scopes = 'read_products,write_products,read_orders,write_orders';
+      const apiKey = import.meta.env.VITE_API_KEY;
+      const scopes = 'read_products,write_products,read_orders,read_assigned_fulfillment_orders,write_assigned_fulfillment_orders,read_fulfillments,write_fulfillments,read_merchant_managed_fulfillment_orders,write_merchant_managed_fulfillment_orders,read_third_party_fulfillment_orders,write_third_party_fulfillment_orders,read_assigned_fulfillment_orders,write_assigned_fulfillment_orders,read_locations ';
       const redirectUri = 'http://localhost:8080/';
       const trimmedShop = shop.trim();
     
@@ -22,8 +22,10 @@ const ConnectToShopify = () => {
     
     if (code && returnedShop) {
       // Redirect to your cloud function to exchange the code for an access token
+      // after the exhanage, the access token is stored in the db. (allows access to most of the app.)
       const exchangeUrl = `https://us-central1-slant3d-shopify.cloudfunctions.net/connectShopifyStore?code=${code}&shop=${returnedShop}`;
 
+      // After the exchange is completed
       // Redirect the user to the exchange URL
       window.location.href = exchangeUrl;
     }

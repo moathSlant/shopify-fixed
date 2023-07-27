@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ShopifyContext from '../context/ShopifyContext';
+import axios from 'axios';
 
 const SalesPage = () => {
   const { shop, accessToken } = useContext(ShopifyContext);
@@ -25,22 +26,28 @@ const SalesPage = () => {
   return (
     <div>
       <div>
-      {orders.map(order => (
-  <div key={order.id} style={{ display: 'flex', justifyContent: 'space-around', margin: '20px 0' }}>
-    {order.line_items?.[0]?.variant?.image?.src && (
-      <img src={order.line_items[0].variant.image.src} alt="order" style={{ width: '100px', height: '100px' }} />
-    )}
-    <p>ID: {order.id}</p>
-    <p>Price: ${order.total_price}</p>
-    <p>Quantity: {order.line_items.reduce((total, item) => total + item.quantity, 0)}</p>
-    <p><a target='_blank' rel='noopener noreferrer' href={order.order_status_url} style={{ textDecoration: 'underline' }}>Status</a></p>
-  </div>
-))}
-
+        {orders.map(order => {
+          const imageUrl = order.line_items[0]?.variant?.image?.src;
+          const orderDate = new Date(order.created_at);
+          const formattedDate = `${orderDate.getFullYear()}-${orderDate.getMonth()+1}-${orderDate.getDate()}`;
+          const formattedPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(order.total_price);
+          console.log(imageUrl)
+          return (
+            <div key={order.id} style={{ display: 'flex', justifyContent: 'space-around', margin: '20px 0' }}>
+              {imageUrl && (
+                <img src={imageUrl} alt="order item" style={{ width: '100px', height: '100px' }} />
+              )}
+              <p>ID: {order.id}</p>
+              <p>Date: {formattedDate}</p>
+              <p>Income: {formattedPrice}</p>
+              <p>Quantity: {order.line_items.reduce((total, item) => total + item.quantity, 0)}</p>
+              <p><a target='_blank' rel='noopener noreferrer' href={order.order_status_url} style={{ textDecoration: 'underline' }}>Order Summary</a></p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 };
-
 
 export default SalesPage;

@@ -57,7 +57,7 @@ export const ShopifyProvider = ({ children }) => {
         setIsShopifyConnected,
         shop,
         setShop,
-        accessToken: localStorage.getItem('accessToken'), // Add this line
+        accessToken: localStorage.getItem('accessToken'), 
         handleConnectShopify,
         handleDisconnectShopify,
       }}

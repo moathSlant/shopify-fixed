@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import uploadService from '../services/UploadService';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { doc, setDoc, arrayUnion } from "firebase/firestore"; 
+import { doc, setDoc, arrayUnion } from "firebase/firestore";
 import { storage, db } from '../firebase';  // assuming Firestrestore
 import { AuthContext } from '../context/AuthContext';
 const UploadModal = ({ isOpen, onClose }) => {
@@ -30,22 +30,22 @@ const UploadModal = ({ isOpen, onClose }) => {
     const now = new Date();
     const timestamp = now.getTime(); // Get the current timestamp
     const fileId = `${timestamp}`; // Combine timestamp and filename
-  
+
     return fileId;
   };
-  
+
   const handleUpload = async (file) => {
     try {
       if (!user) {
         console.error('User not authenticated. Please authenticate before uploading.');
         return;
       }
-  
+
       const fileId = generateUniqueId(); // Generate a unique fileId here
-  
+
       const storageRef = ref(storage, `3d-files/${fileId}/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
-  
+
       uploadTask.on(
         'state_changed',
         (snapshot) => {
@@ -62,10 +62,10 @@ const UploadModal = ({ isOpen, onClose }) => {
             const fileData = await uploadService.uploadFileToApi(
               downloadURL,
               file.name,
-              '80jkdjfj9832yfjld'
+              import.meta.env.VITE_API_KEY2
             );
             console.log('API Response:', fileData);
-            
+
             // Add file to Firestore with fileId and API response
             await addFileToFirestore(user.uid, {
               fileId, // Add the fileId to Firestore
@@ -73,7 +73,7 @@ const UploadModal = ({ isOpen, onClose }) => {
               url: downloadURL,
               apiResponse: fileData // Store the API response data
             });
-  
+
             setSelectedFile(null); // Reset the selected file
             onClose();
           } catch (error) {

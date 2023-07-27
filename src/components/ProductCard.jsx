@@ -4,20 +4,19 @@ import matchService from '../services/matchService';
 
 const ProductCard = ({ product }) => {
   const [isMatchingModalOpen, setIsMatchingModalOpen] = useState(false);
-  const [matchedFileName, setMatchedFileName] = useState('');
+  const [matchedFile, setMatchedFile] = useState(null);
 
-  useEffect(() => {
-    const checkMatchedFile = async () => {
-      try {
-        const matchedFile = await matchService.getMatchedFile(product.id);
-        if (matchedFile) {
-          setMatchedFileName(matchedFile.fileName);
-        }
-      } catch (error) {
-        console.error('Error checking matched file:', error);
+  const checkMatchedFile = async () => {
+    try {
+      const matched = await matchService.getMatchedFile(product.id);
+      if (matched) {
+        setMatchedFile(matched);
       }
-    };
-
+    } catch (error) {
+      console.error('Error checking matched file:', error);
+    }
+  };
+  useEffect(() => {
     checkMatchedFile();
   }, [product.id]);
 
@@ -34,6 +33,7 @@ const ProductCard = ({ product }) => {
     // Perform the matching logic here
     console.log('Matched Product ID:', product.id);
     console.log('Matched File ID:', fileId);
+    checkMatchedFile();
   };
 
   return (
@@ -55,8 +55,11 @@ const ProductCard = ({ product }) => {
           <p className="text-gray-700">Price: ${product.variants[0]?.price || ''}</p>
           <p className="text-gray-700">SKU: {product.id}</p>
         </div>
-        {matchedFileName ? (
-          <p>Matched with: {matchedFileName}</p>
+        {matchedFile ? (
+          <div>
+            <p>Matched with: {matchedFile.fileName}</p>
+            <p>Cost to print: ${matchedFile.price}</p>
+          </div>
         ) : (
           <button onClick={handleMatchButtonClick}>Match</button>
         )}

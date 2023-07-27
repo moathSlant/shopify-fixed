@@ -53,7 +53,7 @@ const NavBar = () => {
 
   return (
     <nav className="bg-black pb-3 pt-3 relative z-50">
-      <div className="container mx-auto flex items-center justify-between px-4 py-2">
+      <div className="container mx-auto flex items-center justify-between  py-2">
         <div className="flex items-center">
           <Link
             className="text-white text-3xl font-bold mr-8 hover:text-gray-300 transition duration-300 transform hover:scale-110"
@@ -62,19 +62,27 @@ const NavBar = () => {
             <img className="h-10 w-auto" src="src\assets\Slant 3D Logo (white).png" alt="Slant 3D Logo" />
           </Link>
 
+
           {user && (
-            <div className="ml-4 space-x-2">
+            <div className="ml-4 space-x-6">
+          <NavLink
+                to="/"
+                className="text-white text-lg hover:text-gray-300 transition duration-300 transform hover:scale-110"
+                // activeClassName="underline"
+              >
+                Products
+              </NavLink>
               <NavLink
                 to="/files"
                 className="text-white text-lg hover:text-gray-300 transition duration-300 transform hover:scale-110"
-                activeClassName="underline"
+                // activeClassName="underline"
               >
                 Files
               </NavLink>
               <NavLink
                 to="/sales"
                 className="text-white text-lg hover:text-gray-300 transition duration-300 transform hover:scale-110"
-                activeClassName="underline"
+                // activeClassName="underline"
               >
                 Sales
               </NavLink>

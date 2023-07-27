@@ -9,15 +9,23 @@ const MatchingModal = ({ productId, onClose, onMatch, product }) => {
   const [filteredFiles, setFilteredFiles] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedColors, setSelectedColors] = useState({});
+
   const { user } = useContext(AuthContext);
   useEffect(() => {
     const fetchFiles = async () => {
       try {
         const fetchedFiles = await uploadService.getAllFiles(user.uid);
-        const processedFiles = fetchedFiles.map((file) => ({
-          ...file,
-          fileId: file.fileId, // Access the nested fileId field
-        }));
+        const processedFiles = fetchedFiles.map((file) => {
+          // Assume the `apiResponse` object is at the root level of each file
+          const { materialUsageInGrams, timeToPrintInSeconds } = file.apiResponse;
+          return {
+            ...file,
+            fileId: file.fileId, // Access the nested fileId field
+            materialUsageInGrams,
+            timeToPrintInSeconds,
+          };
+        });
         setFiles(processedFiles);
         setFilteredFiles(processedFiles); // Initialize filtered files with all files
         setIsLoading(false); // Set loading status to false once files are fetched
@@ -25,6 +33,7 @@ const MatchingModal = ({ productId, onClose, onMatch, product }) => {
         console.error('Error fetching files:', error);
       }
     };
+
 
     fetchFiles();
   }, [user]);
@@ -41,25 +50,40 @@ const MatchingModal = ({ productId, onClose, onMatch, product }) => {
     if (isSubmitting) {
       return; // Return early if already submitting
     }
-
+  
     setIsSubmitting(true); // Set submitting status
-
+  
     try {
       const selectedFile = files.find((file) => file.fileId === fileId);
-      console.log(fileId);
       if (!selectedFile) {
         throw new Error('Invalid file');
       }
-      console.log(fileId);
-      const { name, url: fileUrl } = selectedFile;
-      await matchService.createMatching(fileId, name, fileUrl, productId, product.title);
-      onMatch(fileId, productId);
+  
+      const selectedColor = selectedColors[fileId];
+      if (!selectedColor) {
+        throw new Error('Color must be selected');
+      }
+  
+      const { name, url: fileUrl, timeToPrintInSeconds } = selectedFile;
+      let printTimeInHours;
+      let price;
+      if (timeToPrintInSeconds) {
+        printTimeInHours = timeToPrintInSeconds / 3600;
+        price = printTimeInHours; // $1 per hour
+      }
+  
+      await matchService.createMatching(fileId, name, fileUrl, productId, product.title, price.toFixed(2), user.uid, selectedColor);
+      onMatch(fileId, productId, selectedColor);
       onClose();
     } catch (error) {
       console.error('Error matching file:', error);
     } finally {
       setIsSubmitting(false); // Reset submitting status
     }
+  };
+  
+  const handleColorSelect = (color, fileId) => {
+    setSelectedColors({ ...selectedColors, [fileId]: color });
   };
 
 
@@ -87,18 +111,38 @@ const MatchingModal = ({ productId, onClose, onMatch, product }) => {
                 <p className="text-center text-gray-500">No files found</p>
               ) : (
                 <>
-                  {filteredFiles.slice().map((file) => (
-                    <div key={file.id} className="border border-gray-300 rounded p-4 cursor-pointer">
-                      <p>{file.name}</p>
-                      <button
-                        className="bg-black hover:bg-blue-900 text-white font-semibold py-2 px-4 rounded mt-2"
-                        onClick={() => handleMatch(file.fileId)} // Use file.fileId instead of file.id
-                      >
-                        Match
-                      </button>
-
-                    </div>
-                  ))}
+                {filteredFiles.map((file) => (
+  <div key={file.fileId} className="border border-gray-300 rounded p-4 cursor-pointer flex items-center justify-between">
+    <div>
+      <p>{file.name}</p>
+    </div>
+    <div className="flex items-center">
+      <div className="mb-4 flex space-x-2 pt-5">
+        <div
+          className={`h-6 w-6 border-2 ${selectedColors[file.fileId] === 'black' ? 'border-blue-500' : 'border-blue'} rounded`}
+          style={{ backgroundColor: 'black' }}
+          onClick={() => handleColorSelect('black', file.fileId)}
+        />
+        <div
+          className={`h-6 w-6 border-2 ${selectedColors[file.fileId] === 'white' ? 'border-blue-500' : 'border-blue'} rounded`}
+          style={{ backgroundColor: 'white' }}
+          onClick={() => handleColorSelect('white', file.fileId)}
+        />
+        <div
+          className={`h-6 w-6 border-2 ${selectedColors[file.fileId] === 'gray' ? 'border-blue-500' : 'border-blue'} rounded`}
+          style={{ backgroundColor: 'gray' }}
+          onClick={() => handleColorSelect('gray', file.fileId)}
+        />
+      </div>
+      <button
+        className="bg-black text-white font-semibold py-2 px-4 rounded mt-2 ml-4"
+        onClick={() => handleMatch(file.fileId)} // Use file.fileId instead of file.id
+      >
+        Match
+      </button>
+    </div>
+  </div>
+))}
                 </>
               )}
             </div>
@@ -113,6 +157,8 @@ const MatchingModal = ({ productId, onClose, onMatch, product }) => {
       </div>
     </div>
   );
+  
+  
 };
 
 export default MatchingModal;
