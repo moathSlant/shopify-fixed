@@ -26,6 +26,23 @@ const SalesPage = () => {
   return (
     <div>
       <div>
+{orders.map(order => {
+  const imageUrl = order.line_items[0]?.variant?.image?.src;
+  console.log(imageUrl)
+  return (
+    <div key={order.id} style={{ display: 'flex', justifyContent: 'space-around', margin: '20px 0' }}>
+      {imageUrl && (
+        <img src={imageUrl} alt="order item" style={{ width: '100px', height: '100px' }} />
+      )}
+      <p>ID: {order.id}</p>
+      <p>Price: ${order.total_price}</p>
+      <p>Quantity: {order.line_items.reduce((total, item) => total + item.quantity, 0)}</p>
+      <p><a target='_blank' rel='noopener noreferrer' href={order.order_status_url} style={{ textDecoration: 'underline' }}>Status</a></p>
+    </div>
+  );
+})}
+
+
         {orders.map(order => {
           const imageUrl = order.line_items[0]?.variant?.image?.src;
           const orderDate = new Date(order.created_at);

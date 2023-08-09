@@ -121,34 +121,34 @@ exports.getShopifyOrders = functions.https.onRequest(async (req, res) => {
 });
 
 
-exports.createShopifyFulfillment = functions.https.onRequest((req, res) => {
-  corsHandler(req, res, async () => {
-    try {
-      const { shop, accessToken, apiVersion } = req.query;  // access query parameters here
-      const { orderId, lineItems, trackingNumber } = req.body;
+// exports.createShopifyFulfillment = functions.https.onRequest((req, res) => {
+//   corsHandler(req, res, async () => {
+//     try {
+//       const { shop, accessToken, apiVersion } = req.query;  // access query parameters here
+//       const { orderId, lineItems, trackingNumber } = req.body;
 
-      const shopify = new Shopify({
-        shopName: shop,
-        accessToken: accessToken,
-        apiVersion: apiVersion || '2023-10'  // use the passed API version or default to '2022-04'
-      });
+//       const shopify = new Shopify({
+//         shopName: shop,
+//         accessToken: accessToken,
+//         apiVersion: apiVersion || '2023-10'  // use the passed API version or default to '2022-04'
+//       });
 
-      const fulfillment = {
-        location_id: '84429537558',
-        tracking_number: trackingNumber,
-        notify_customer: false,
-        line_items: lineItems
-      };
+//       const fulfillment = {
+//         location_id: '84429537558',
+//         tracking_number: trackingNumber,
+//         notify_customer: false,
+//         line_items: lineItems
+//       };
 
-      const response = await shopify.fulfillment.create(orderId, fulfillment);
+//       const response = await shopify.fulfillment.create(orderId, fulfillment);
 
-      res.status(200).json({ message: 'Fulfillment created successfully', fulfillment: response });
-    } catch (error) {
-      console.error('Error creating Shopify fulfillment:', error);
-      res.status(500).json({ message: 'Error creating Shopify fulfillment', error: error.toString() });
-    }
-  });
-});
+//       res.status(200).json({ message: 'Fulfillment created successfully', fulfillment: response });
+//     } catch (error) {
+//       console.error('Error creating Shopify fulfillment:', error);
+//       res.status(500).json({ message: 'Error creating Shopify fulfillment', error: error.toString() });
+//     }
+//   });
+// });
 
 
 
