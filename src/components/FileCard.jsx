@@ -11,15 +11,7 @@ const FileCard = ({ file, response }) => {
         price = printTimeInHours; // $1 per hour
     }
 
-    return (
-
-    // Calculate the print time in hours and price
-    let printTimeInHours;
-    let price;
-    if (response && response.timeToPrintInSeconds) {
-        printTimeInHours = response.timeToPrintInSeconds / 3600;
-        price = printTimeInHours; // $1 per hour
-    }
+ 
 
     return (
     <div className="border border-gray-300 rounded shadow-md p-4 mb-4">

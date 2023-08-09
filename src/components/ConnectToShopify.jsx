@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import './ConnectToShopify.css'
+import AuthContext from '../context/AuthContext';
 const ConnectToShopify = () => {
   const [shop, setShop] = useState('');
-
+const user = useContext(AuthContext);
     const handleConnectShopify = () => {
       const apiKey = import.meta.env.VITE_API_KEY;
-      const scopes = 'read_products,write_products,read_orders,read_assigned_fulfillment_orders,write_assigned_fulfillment_orders,read_fulfillments,write_fulfillments,read_merchant_managed_fulfillment_orders,write_merchant_managed_fulfillment_orders,read_third_party_fulfillment_orders,write_third_party_fulfillment_orders,read_assigned_fulfillment_orders,write_assigned_fulfillment_orders,read_locations ';
+      const scopes = 'read_products,write_products,read_orders,write_orders,read_assigned_fulfillment_orders,write_assigned_fulfillment_orders,read_fulfillments,write_fulfillments,read_merchant_managed_fulfillment_orders,write_merchant_managed_fulfillment_orders,read_third_party_fulfillment_orders,write_third_party_fulfillment_orders,read_assigned_fulfillment_orders,write_assigned_fulfillment_orders,read_locations ';
       const redirectUri = 'http://localhost:8080/';
       const trimmedShop = shop.trim();
     
