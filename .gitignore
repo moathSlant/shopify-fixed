@@ -24,6 +24,6 @@ dist-ssr
 *.sw?
 .env
 
-firebase.js
-firebase.jsfirebase.js
-C:\Users\Slant3D_Slicer\Desktop\shopify-app\firebase.js
+# firebase.js
+# firebase.jsfirebase.js
+# C:\Users\Slant3D_Slicer\Desktop\shopify-app\firebase.js
