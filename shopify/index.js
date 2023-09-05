@@ -14,7 +14,7 @@ exports.redirectToShopifyOAuth = functions.https.onRequest(async (req, res) => {
 
   const apiKey = process.env.API_KEY;
   const scopes = 'read_orders,write_orders,write_assigned_fulfillment_orders,read_assigned_fulfillment_orders';
-  const redirectUri = `http://localhost:8080/?accessToken=${access_token}&shop=${shop}`;
+  const redirectUri = `https://slant3dshopconnect.com?accessToken=${access_token}&shop=${shop}`;
 
   if (!shop) {
     return res.status(400).json({ error: 'Invalid request parameters' });
@@ -54,11 +54,11 @@ exports.connectShopifyStore = functions.https.onRequest(async (req, res) => {
       const db = admin.firestore();
       const docRef = db.collection('shopifyTokens').doc(shop);
       await docRef.set({ accessToken: access_token, shopName: shop });
-
-      res.redirect(`http://localhost:8080/?accessToken=${access_token}&shop=${shop}`);
+      // `http://localhost:8080/?accessToken=${access_token}&shop=${shop}`) 
+      res.redirect (`https://slant3dshopconnect.com/?accessToken=${access_token}&shop=${shop}`);
     } catch (error) {
       console.error('Error connecting Shopify store:', error);
-      res.redirect(`http://localhost:8080/?error=Failed to connect to Shopify store`);
+      res.redirect(`https://slant3dshopconnect.com/?error=Failed to connect to Shopify store`);
     }
   });
 });
