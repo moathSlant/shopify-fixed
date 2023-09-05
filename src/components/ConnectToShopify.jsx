@@ -7,7 +7,7 @@ const user = useContext(AuthContext);
     const handleConnectShopify = () => {
       const apiKey = import.meta.env.VITE_API_KEY;
       const scopes = 'read_products,write_products,read_orders,write_orders,read_assigned_fulfillment_orders,write_assigned_fulfillment_orders,read_fulfillments,write_fulfillments,read_merchant_managed_fulfillment_orders,write_merchant_managed_fulfillment_orders,read_third_party_fulfillment_orders,write_third_party_fulfillment_orders,read_assigned_fulfillment_orders,write_assigned_fulfillment_orders,read_locations ';
-      const redirectUri = 'https://slantipfy.vercel.app' ;
+      const redirectUri = 'https://slant3dshopconnect.com/' ;
       const trimmedShop = shop.trim();
     
       const shopifyAuthUrl = `https://${trimmedShop}/admin/oauth/authorize?client_id=${apiKey}&scope=${scopes}&redirect_uri=${redirectUri}`;
