@@ -19,20 +19,12 @@ const SignInWithGoogleButton = () => {
     <div>
       {user ? (
         <div className="flex items-center space-x-2">
-          {/* <img
-            className="rounded-full"
-            src={user?.photoURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}
-            alt={user.displayName}
-            width={32}
-            height={32}
-          />
-          <span className="text-white">{user.displayName}</span> */}
-          {/* <button
+          <button
             className="bg-red-500 hover:bg-red-600 px-3 py-1 text-white rounded"
             onClick={handleLogout}
           >
             Log out
-          </button> */}
+          </button>
         </div>
       ) : (
         <button
