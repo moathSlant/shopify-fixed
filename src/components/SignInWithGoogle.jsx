@@ -19,12 +19,12 @@ const SignInWithGoogleButton = () => {
     <div>
       {user ? (
         <div className="flex items-center space-x-2">
-          <button
+          {/* <button
             className="bg-red-500 hover:bg-red-600 px-3 py-1 text-white rounded"
             onClick={handleLogout}
           >
             Log out
-          </button>
+          </button> */}
         </div>
       ) : (
         <button
